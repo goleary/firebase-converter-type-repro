@@ -1,8 +1,11 @@
-import { FirestoreDataConverter } from "firebase/firestore";
+import {
+  FirestoreDataConverter,
+  QueryDocumentSnapshot,
+} from "firebase/firestore";
 
 import firebase from "firebase/compat/app";
 
-import "firebase/compat/firestore";
+// import "firebase/compat/firestore";
 
 type Thingy = {
   name: string;
@@ -16,9 +19,12 @@ let converter1: FirestoreDataConverter<Thingy> = {
 };
 
 const converter2: firebase.firestore.FirestoreDataConverter<Thingy> = {
-  fromFirestore: (snapshot) => ({
-    name: snapshot.get("name") ?? "noname",
-  }),
+  fromFirestore: (snapshot) => {
+    let qds: QueryDocumentSnapshot = snapshot;
+    return {
+      name: snapshot.get("name") ?? "noname",
+    };
+  },
   toFirestore: (model) => model,
 };
 
